@@ -1,3 +1,5 @@
+
+// Code that students will get ** must be fixed by Kinsey**
 import java.util.*;
 
 public class StarterGuess {
@@ -7,7 +9,6 @@ public class StarterGuess {
 
         // store the result of the user
 
-        //
         return result;
 
     }

@@ -1,24 +1,23 @@
+
+// full version of the incorrect code
 import java.util.*;
 
-public class GuessError {
+public class Guess {
     // syntax error
     public static int parseInt(Scanner sc, String prompt) {
-        // print the prompt
-        // try to see if we can turn off the complier warnings and turn off the warnings
-        // too
-        System.out.println(prompt);
-        // store the result of the user
+        while (true) {
+            System.out.print(prompt);
+            // ** logic error: should be nextInt instead of next
+            int s = sc.next();
 
-        // ** logic error: should be nextInt instead of next
-        // make this as a suggestion*
-        int s = sc.next();
-        return s;
-
+            try {
+                return Integer.parseString(s);
+            } catch (NumberFormatException nfe) {
+                System.out.println("Not an integer. Try again.");
+            }
+        }
     }
 
-    /**
-     * prob another logic error
-     */
     public static int[] narrowRange(int minV, int maxV, int guess, int secret) {
         // ** invert the minV and maxV to create a logic/runtime error
         // make this as a suggestion*
@@ -37,9 +36,6 @@ public class GuessError {
         return new int[] { minV, maxV };
     }
 
-    /**
-     * Average of guesses;
-     */
     public static double averageGuess(int[] guesses) {
         // syntax error: Type mismatch: cannot convert from long to int
         int sum = 0L;
@@ -55,16 +51,13 @@ public class GuessError {
 
         // Exception in thread "main" java.lang.IllegalArgumentException: bound must be
         // positive
-        // make this as a suggestion*
-        int secret = rng.nextInt(minV - maxV + 2) + minV;
+        int secret = rng.nextInt(maxV - minV + 1) + minV;
 
         int rounds = 8;
         int[] guesses = new int[rounds];
 
         // logic error : ends at 7 and not 8 attempts
-        // make this as a suggestion*
-        for (int attempt = 1; attempt < 8; attempt++) {
-
+        for (int attempt = 1; attempt <= 8; attempt++) {
             System.out.printf("Attempt %d/8 — range is [%d, %d]%n", attempt, minV, maxV);
             int guess = parseInt(sc, "Your guess: ");
 
@@ -78,7 +71,6 @@ public class GuessError {
             } else {
                 System.out.println("Lower.");
             }
-
             int[] range = narrowRange(minV, maxV, guess, secret);
 
             // Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: Index 2
@@ -92,9 +84,10 @@ public class GuessError {
         if (guesses[guesses.length - 1] != secret) {
             System.out.printf("Out of attempts! Secret was %d.%n", secret);
         }
+
         // You made 8 guesses; average guess value: Exception in thread "main"
         // java.util.IllegalFormatConversionException: f != java.lang.Integer
-        int avg = (int) averageGuess(guesses);
+        double avg = averageGuess(guesses);
         System.out.printf("You made %d guesses; average guess value: %.1f%n", guesses.length, avg);
     }
 
