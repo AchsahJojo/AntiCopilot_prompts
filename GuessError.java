@@ -33,7 +33,7 @@ public class GuessError {
             minV = maxV;
         }
         // return array with new minV and maxV
-        // make this as a suggestion*
+        // make this as a correct suggestion*
         return new int[] { minV, maxV };
     }
 
@@ -41,10 +41,11 @@ public class GuessError {
      * Average of guesses;
      */
     public static double averageGuess(int[] guesses) {
+        // syntax error: Type mismatch: cannot convert from long to int
         int sum = 0L;
         for (int g : guesses)
             sum += g;
-        // logic error on line 39, it doesnt do proper casting
+        // logic error on line 49, it doesnt do proper casting
         return (int) sum / guesses.length;
     }
 
@@ -103,8 +104,3 @@ public class GuessError {
         play(sc, rng);
     }
 }
-
-// finish the plugin so that it incooperates the changes made in
-// StarterGuess.java
-// get a good draf for all the issues , arrayList to just arrays and more errors
-// on each line

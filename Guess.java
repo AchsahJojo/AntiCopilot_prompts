@@ -1,3 +1,5 @@
+
+// correct version of nunber guess
 import java.util.*;
 
 public class Guess {
@@ -37,7 +39,6 @@ public class Guess {
      * Average of guesses;
      */
     public static double averageGuess(List<Integer> guesses) {
-        // long sum = 0L;
         int sum = 0;
         for (int g : guesses)
             sum += g;
@@ -54,15 +55,16 @@ public class Guess {
         // int secret = rng.nextInt(minV - maxV + 2) + minV; // inclusive
         int secret = rng.nextInt(maxV - minV + 1) + minV; // inclusive
 
-        // *** need to use normal arrays and keep track of upper bound and lower bound
-        List<Integer> guesses = new ArrayList<>();
+        int rounds = 8;
+        int[] guesses = new int[rounds];
 
         // logic error : ends at 7 and not 8 attempts
         for (int attempt = 1; attempt <= 8; attempt++) {
             // for (int attempt = 1; attempt < 8; attempt++) {
             System.out.printf("Attempt %d/8 — range is [%d, %d]%n", attempt, minV, maxV);
             int guess = parseInt(sc, "Your guess: ");
-            guesses.add(guess);
+
+            guesses[attempt - 1] = guess;
 
             if (guess == secret) {
                 System.out.println("Correct! 🎉");
@@ -72,15 +74,6 @@ public class Guess {
             } else {
                 System.out.println("Lower.");
             }
-
-            // logic error wrong way to determon correct/high/low
-            // if (guess >= secret) {
-            // System.out.println("Higher.");
-            // } else if (guess < secret) {
-            // System.out.println("Lower");
-            // } else {
-            // System.out.println("correct!");
-            // }
 
             int[] range = narrowRange(minV, maxV, guess, secret);
 
@@ -95,14 +88,14 @@ public class Guess {
         // Exception in thread "main" java.lang.IndexOutOfBoundsException: Index 8 out
         // of bounds for length 8
         // if (guesses.get(guesses.size()) != secret) {
-        if (guesses.isEmpty() || guesses.get(guesses.size() - 1) != secret) {
+        if (guesses[guesses.length - 1] != secret) {
             System.out.printf("Out of attempts! Secret was %d.%n", secret);
         }
         // You made 8 guesses; average guess value: Exception in thread "main"
         // java.util.IllegalFormatConversionException: f != java.lang.Integer
         // int avg = (int) averageGuess(guesses);
         double avg = averageGuess(guesses);
-        System.out.printf("You made %d guesses; average guess value: %.1f%n", guesses.size(), avg);
+        System.out.printf("You made %d guesses; average guess value: %.1f%n", guesses.length, avg);
     }
 
     void main(String[] args) {
@@ -111,9 +104,3 @@ public class Guess {
         play(sc, rng);
     }
 }
-
-// finish the plugin so that it incooperates the changes made in
-// StarterGuess.java
-// get a good draft for all the issues , arrayList to just arrays and more
-// errors
-// on each line
