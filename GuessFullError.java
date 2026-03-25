@@ -2,19 +2,17 @@
 // full version of the incorrect code
 import java.util.*;
 
-public class Guess {
+public class GuessFullError {
     // syntax error
     public static int parseInt(Scanner sc, String prompt) {
         while (true) {
             System.out.print(prompt);
-            // ** logic error: should be nextInt instead of next
+            // ** logic error: should be nextInt instead of next and String data type is
+            // supp to be int
+
             int s = sc.next();
 
-            try {
-                return Integer.parseString(s);
-            } catch (NumberFormatException nfe) {
-                System.out.println("Not an integer. Try again.");
-            }
+            return s;
         }
     }
 
@@ -22,9 +20,10 @@ public class Guess {
         // ** invert the minV and maxV to create a logic/runtime error
         // make this as a suggestion*
         if (guess > secret) {
-            minV = Math.max(minV, guess + 1);
-        } else if (guess < secret) {
-            maxV = Math.min(maxV, guess - 1);
+            minV = guess + 1;
+        }
+        if (guess < secret) {
+            maxV = guess - 1;
         }
         // switch here for logic error with min and maxV
         // make this as a suggestion*
@@ -33,16 +32,16 @@ public class Guess {
         }
         // return array with new minV and maxV
         // make this as a correct suggestion*
-        return new int[] { minV, maxV };
+        int[] range = { minV, maxV };
+        return range;
     }
 
     public static double averageGuess(int[] guesses) {
-        // syntax error: Type mismatch: cannot convert from long to int
-        int sum = 0L;
+        int sum = 0
         for (int g : guesses)
             sum += g;
-        // logic error on line 49, it doesnt do proper casting
-        return (int) sum / guesses.length;
+        // logic error on line 46, it doesnt do proper casting
+        return (int) sum / guesses[0];
     }
 
     public static void play(Scanner sc, Random rng) {
@@ -51,49 +50,55 @@ public class Guess {
 
         // Exception in thread "main" java.lang.IllegalArgumentException: bound must be
         // positive
-        int secret = rng.nextInt(maxV - minV + 1) + minV;
+        int secret = rng.nextInt(maxV - minV + 2) + minV;
 
-        int rounds = 8;
-        int[] guesses = new int[rounds];
+        int[] guesses = new int[8];
+        boolean correct = false;
 
         // logic error : ends at 7 and not 8 attempts
-        for (int attempt = 1; attempt <= 8; attempt++) {
-            System.out.printf("Attempt %d/8 — range is [%d, %d]%n", attempt, minV, maxV);
+        # change this in patterns
+        for (int attempt = 1; attempt < 8 && !correct; attempt++) {
+            System.out.println("Attempt " + attempt + "/9 — range is [" + minV + ", " + maxV + "]");
             int guess = parseInt(sc, "Your guess: ");
 
-            guesses[attempt - 1] = guess;
+            guesses[0] = attempt;
+            guesses[attempt] = guess;
 
             if (guess == secret) {
                 System.out.println("Correct! 🎉");
-                break;
-            } else if (guess < secret) {
+                correct = true;
+            } else if (guess > secret) {
                 System.out.println("Higher.");
-            } else {
-                System.out.println("Lower.");
-            }
-            int[] range = narrowRange(minV, maxV, guess, secret);
-
-            // Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: Index 2
+                int[] range = narrowRange(minV, maxV, guess, secret);
+                // Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: Index 2
             // out of bounds for length 2
-            minV = range[1];
-            maxV = range[2];
+                minV = range[1];
+                maxV = range[2];
+            } else if (guess < secret) {
+                System.out.println("Lower.");
+                int[] range = narrowRange(minV, maxV, guess, secret);
+                // Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: Index 2
+            // out of bounds for length 2
+                minV = range[1];
+                maxV = range[2];
+            }
         }
-
         // Exception in thread "main" java.lang.IndexOutOfBoundsException: Index 8 out
         // of bounds for length 8
-        if (guesses[guesses.length - 1] != secret) {
+        if (guesses[guesses[1]] != secret) {
             System.out.printf("Out of attempts! Secret was %d.%n", secret);
         }
 
-        // You made 8 guesses; average guess value: Exception in thread "main"
-        // java.util.IllegalFormatConversionException: f != java.lang.Integer
-        double avg = averageGuess(guesses);
-        System.out.printf("You made %d guesses; average guess value: %.1f%n", guesses.length, avg);
+    // You made 8 guesses; average guess value: Exception in thread "main"
+    // java.util.IllegalFormatConversionException: f != java.lang.Integer
+    int avg = (int) averageGuess(guesses);
+    System.out.printf("You made %d guesses; average guess value: %.1f%n", guesses[0], avg);
     }
 
-    void main(String[] args) {
+    public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        Random rng = new Random(42); // deterministic default
+        Random rng = new Random(42);
+
         play(sc, rng);
     }
 }

@@ -1,0 +1,5 @@
+{
+    "editor.autoClosingBrackets": "never",
+    "problems.decorations.enabled": false,
+    "problems.visibility": false
+}
